@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <script type="text/javascript" src="boundedgepolicy.js"></script>
+    <script type="text/javascript" src="grid.js"></script>
+    <script type="text/javascript" src="gridpainter.js"></script>
+    <script type="text/javascript" src="simulation.js"></script>
+    <script type="text/javascript" src="executor.js"></script>
+    <script type="text/javascript" src="occupant.js"></script>
+    <script type="text/javascript" src="pheromone.js"></script>
+    <script type="text/javascript" src="agent.js"></script>
+  </head>
+
+  <body>
+  BA Test
+    <canvas id="ba_canvas" width="800" height="800"></canvas>
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      var canvas = document.getElementById('ba_canvas');
+      var context = canvas.getContext('2d');
+
+      sim = new Simulation(50, 50, 5, 10, 10, context);
+      ph = new Pheromone(sim.grid, 1, 20, 20, 100, 1, 25)
+      sim.add(ph)
+
+      function animate(sim, canvas, context) {
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        sim.animateStep();
+
+        // request new frame
+        requestAnimFrame(function() {
+          animate(sim, canvas, context);
+        });
+      }
+
+
+      // wait one second before starting animation
+      setTimeout(function() {
+        animate(sim, canvas, context);
+      }, 1000);
+    </script>
+  </body>
+</html>
